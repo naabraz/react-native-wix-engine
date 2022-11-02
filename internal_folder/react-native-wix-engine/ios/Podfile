@@ -2,12 +2,12 @@ platform :ios, '10.0'
 require_relative '../../../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 def add_flipper_pods!(versions = {})
-  versions['Flipper'] ||= '~> 0.33.1'
+  versions['Flipper'] ||= '0.87.0'
   versions['DoubleConversion'] ||= '1.1.7'
-  versions['Flipper-Folly'] ||= '~> 2.1'
+  versions['Flipper-Folly'] ||= '2.5.3'
   versions['Flipper-Glog'] ||= '0.3.6'
   versions['Flipper-PeerTalk'] ||= '~> 0.0.4'
-  versions['Flipper-RSocket'] ||= '~> 1.0'
+  versions['Flipper-RSocket'] ||= '1.3.1'
 
   pod 'FlipperKit', versions['Flipper'], :configuration => 'Debug'
   pod 'FlipperKit/FlipperKitLayoutPlugin', versions['Flipper'], :configuration => 'Debug'
@@ -91,8 +91,26 @@ target 'ReactNativeWixEngine' do
   # you should disable these next few lines.
   add_flipper_pods!
   post_install do |installer|
+    # Fix after updating to Xcode 13.1
+    find_and_replace("../../../node_modules/react-native/React/CxxBridge/RCTCxxBridge.mm",
+     "_initializeModules:(NSArray<id<RCTBridgeModule>> *)modules", "_initializeModules:(NSArray<Class> *)modules")
+    find_and_replace("../../../node_modules/react-native/ReactCommon/turbomodule/core/platform/ios/RCTTurboModuleManager.mm",
+     "RCTBridgeModuleNameForClass(strongModule))", "RCTBridgeModuleNameForClass(Class(strongModule)))")
     flipper_post_install(installer)
-  end
+ end
+
+ def find_and_replace(dir, findstr, replacestr)
+     Dir[dir].each do |name|
+         text = File.read(name)
+         replace = text.gsub(findstr,replacestr)
+         if text != replace
+             puts "Fix: " + name
+             File.open(name, "w") { |file| file.puts replace }
+             STDOUT.flush
+         end
+     end
+     Dir[dir + '*/'].each(&method(:find_and_replace))
+   end
 end
 
 target 'ReactNativeWixEngine-tvOS' do
