@@ -1,22 +1,22 @@
-import {View, Text, Alert, Button} from 'react-native';
 import React from 'react';
+import { Text, Alert, Button } from 'react-native';
+
+import { ThemeProvider, Box } from '@gympass/yoga';
 
 class Screen extends React.Component {
   render() {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'cyan',
-        }}>
-        <Text>Demo Module A</Text>
-        <Button
-          title="Say Hello to module B"
-          onPress={() => engine.moduleRegistry.invoke('demo-module-b.some-method')}
-        />
-      </View>
+      <ThemeProvider>
+        <Box flex={1} alignItems="center" justifyContent="center" bg="neutral">
+          <Text>Demo Module A</Text>
+          <Button
+            title="Say Hello to module B"
+            onPress={() =>
+              engine.moduleRegistry.invoke('demo-module-b.some-method')
+            }
+          />
+        </Box>
+      </ThemeProvider>
     );
   }
 }

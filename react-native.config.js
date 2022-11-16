@@ -8,4 +8,5 @@ module.exports = {
       project: './internal_folder/react-native-wix-engine/ios',
     },
   },
-}
+  assets: ['../node_modules/@gympass/yoga/fonts'],
+};
