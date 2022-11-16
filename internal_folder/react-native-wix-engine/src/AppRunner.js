@@ -2,7 +2,7 @@
  * It will run the application init the logic and call launch to set Root
  */
 class AppRunner {
-  constructor({engineConfig, moduleGenerators} = {}) {
+  constructor({ engineConfig, moduleGenerators } = {}) {
     this._engineAlreadyInitialized = false;
     this._engineConfig = engineConfig;
     this._moduleGenerators = moduleGenerators;

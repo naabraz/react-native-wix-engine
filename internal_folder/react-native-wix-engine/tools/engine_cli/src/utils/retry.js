@@ -4,7 +4,7 @@ async function retry(options, func) {
     options = {};
   }
 
-  const {retries, interval} = options;
+  const { retries, interval } = options;
 
   let currentRetry = 0;
   while (currentRetry++ < retries) {
@@ -15,7 +15,7 @@ async function retry(options, func) {
         throw e;
       } else {
         const sleep = currentRetry * interval;
-        await new Promise((accept) => setTimeout(accept, sleep));
+        await new Promise(accept => setTimeout(accept, sleep));
       }
     }
   }

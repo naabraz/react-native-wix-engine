@@ -1,10 +1,10 @@
-import {Navigation} from 'react-native-navigation';
+import { Navigation } from 'react-native-navigation';
 import autobind from 'react-autobind';
 
 const BOTTOM_TABS_ELEMENT_ID = 'BottomTabs';
 
 export class Navigator {
-  constructor({moduleRegistry}) {
+  constructor({ moduleRegistry }) {
     this.moduleRegistry = moduleRegistry;
     autobind(this);
   }
@@ -22,8 +22,9 @@ export class Navigator {
   }
 
   async startEmptyApp() {
-    Navigation.registerComponent('engine.noModulesFoundsScreen', () =>
-      require('./Screens/NoModulesFoundsScreen').NoModuleFoundScreen,
+    Navigation.registerComponent(
+      'engine.noModulesFoundsScreen',
+      () => require('./Screens/NoModulesFoundsScreen').NoModuleFoundScreen,
     );
     Navigation.setRoot({
       root: {

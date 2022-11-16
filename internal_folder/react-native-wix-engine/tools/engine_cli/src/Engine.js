@@ -1,13 +1,13 @@
-const {ArgumentParser} = require('argparse');
-const {AsyncPackagerRunner} = require('./runners/AsyncPackagerRunner');
-const {IosRunner} = require('./runners/IosRunner');
-const {AndroidRunner} = require('./runners/AndroidRunner');
-const {Logger} = require('./utils/Logger');
-const {PackagerWatcher} = require('./runners/PackagerWatcher');
-const {RNCLIConfigValidator} = require('./runners/RNCLIConfigValidator');
-const {GenerateConfiguration} = require('./GenerateConfiguration');
+const { ArgumentParser } = require('argparse');
+const { AsyncPackagerRunner } = require('./runners/AsyncPackagerRunner');
+const { IosRunner } = require('./runners/IosRunner');
+const { AndroidRunner } = require('./runners/AndroidRunner');
+const { Logger } = require('./utils/Logger');
+const { PackagerWatcher } = require('./runners/PackagerWatcher');
+const { RNCLIConfigValidator } = require('./runners/RNCLIConfigValidator');
+const { GenerateConfiguration } = require('./GenerateConfiguration');
 const BuildType = require('../../native_builds/BuildType');
-const {simulator} = require('../../native_builds/BuildPlatforms');
+const { simulator } = require('../../native_builds/BuildPlatforms');
 
 function parseArgs() {
   const parser = new ArgumentParser();
@@ -76,7 +76,7 @@ function parseArgs() {
     action: 'storeTrue',
   });
 
-  parser.addArgument('ignored', {isPositional: true, nargs: '*'});
+  parser.addArgument('ignored', { isPositional: true, nargs: '*' });
   return parser.parseArgs();
 }
 
@@ -154,4 +154,4 @@ async function run(args) {
   }
 }
 
-module.exports = {run, parseArgs};
+module.exports = { run, parseArgs };

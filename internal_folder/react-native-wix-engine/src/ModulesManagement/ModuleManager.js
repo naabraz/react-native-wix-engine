@@ -4,19 +4,19 @@ import autoBind from 'react-autobind';
 export const REQUIRED_FUNCTIONS = ['prefix'];
 
 export class ModuleManager {
-  constructor({engineConfig, moduleGenerators, moduleInitializer}) {
+  constructor({ engineConfig, moduleGenerators, moduleInitializer }) {
     autoBind(this);
     this.navigator = navigator;
     this.moduleInitializer = moduleInitializer;
     this.modules = {};
-    this.config = _.merge({modules: []}, engineConfig);
+    this.config = _.merge({ modules: [] }, engineConfig);
     this._createModules(moduleGenerators);
     this.moduleInitializer.modulesCreated(this.modules, this.config.modules);
     this._validate();
   }
 
   _validate() {
-    this._forEachModule(({moduleName}) => this._validateModule(moduleName));
+    this._forEachModule(({ moduleName }) => this._validateModule(moduleName));
   }
 
   initModules() {
@@ -29,7 +29,7 @@ export class ModuleManager {
 
   getLinkDefinitions() {
     const linkDefs = [];
-    this._forEachModule(({module, moduleName}) => {
+    this._forEachModule(({ module, moduleName }) => {
       if (module.deepLinks) {
         const deepLinks = module.deepLinks();
         if (deepLinks) {
@@ -41,7 +41,7 @@ export class ModuleManager {
   }
 
   onLogin() {
-    this._forEachModule(({module, moduleName}) => {
+    this._forEachModule(({ module, moduleName }) => {
       if (!module.onLogin) {
         return;
       }
@@ -54,7 +54,7 @@ export class ModuleManager {
   }
 
   onLogout() {
-    this._forEachModule(({module, moduleName}) => {
+    this._forEachModule(({ module, moduleName }) => {
       if (!module.onLogout) {
         return;
       }
@@ -67,7 +67,7 @@ export class ModuleManager {
   }
 
   onAppSwitchToBackground() {
-    this._forEachModule(({module, moduleName}) => {
+    this._forEachModule(({ module, moduleName }) => {
       if (!module.onAppSwitchToBackground) {
         return;
       }
@@ -83,7 +83,7 @@ export class ModuleManager {
   }
 
   onAppSwitchToForeground() {
-    this._forEachModule(({module, moduleName}) => {
+    this._forEachModule(({ module, moduleName }) => {
       if (!module.onAppSwitchToForeground) {
         return;
       }
@@ -100,7 +100,7 @@ export class ModuleManager {
 
   _getAllTabs() {
     const allTabs = [];
-    this._forEachModule(({module}) => {
+    this._forEachModule(({ module }) => {
       if (module.tabs) {
         allTabs.push(...module.tabs());
       }
@@ -122,7 +122,7 @@ export class ModuleManager {
 
   _forEachModule(fn, shouldBreak = () => false) {
     _.forEach(this.modules, (module, moduleName) => {
-      fn({moduleName, module});
+      fn({ moduleName, module });
       if (shouldBreak && shouldBreak()) {
         return false;
       }
@@ -149,7 +149,7 @@ export class ModuleManager {
       throw new Error(moduleNameToAssert + ' does not return a valid prefix');
     }
 
-    this._forEachModule(({moduleName, module}) => {
+    this._forEachModule(({ moduleName, module }) => {
       if (
         module.prefix &&
         module.prefix() === prefix &&
@@ -163,6 +163,6 @@ export class ModuleManager {
   }
 
   _mapDeepLinks(moduleName, deepLinks) {
-    return deepLinks.map(l => ({...l, moduleName}));
+    return deepLinks.map(l => ({ ...l, moduleName }));
   }
 }

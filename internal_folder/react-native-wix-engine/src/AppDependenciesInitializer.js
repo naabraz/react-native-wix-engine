@@ -1,7 +1,7 @@
-import {AppLauncher} from './AppLauncher';
-import {Navigator} from './Navigator';
-import {ModuleManager} from './ModulesManagement/ModuleManager';
-import {ModuleInitializer} from './ModulesManagement/ModuleInitializer';
+import { AppLauncher } from './AppLauncher';
+import { Navigator } from './Navigator';
+import { ModuleManager } from './ModulesManagement/ModuleManager';
+import { ModuleInitializer } from './ModulesManagement/ModuleInitializer';
 
 export async function init(engineConfig, moduleGenerators) {
   const {
@@ -14,7 +14,7 @@ export async function init(engineConfig, moduleGenerators) {
     registerConsumedServices,
     invoke,
   } = require('./ModulesManagement/EngineModuleRegistry');
-  const navigator = new Navigator({moduleRegistry});
+  const navigator = new Navigator({ moduleRegistry });
   const moduleInitializer = new ModuleInitializer({
     sendBroadcast,
     registerMethod,
@@ -29,7 +29,7 @@ export async function init(engineConfig, moduleGenerators) {
     moduleGenerators,
     moduleInitializer,
   });
-  const appLauncher = new AppLauncher({navigator, moduleManager});
+  const appLauncher = new AppLauncher({ navigator, moduleManager });
   return {
     appLauncher,
     moduleManager,

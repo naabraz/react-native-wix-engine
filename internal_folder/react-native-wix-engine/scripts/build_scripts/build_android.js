@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const {NativeBuilds} = require('../../tools/native_builds/index');
+const { NativeBuilds } = require('../../tools/native_builds/index');
 const BuildType = require('../../tools/native_builds/BuildType');
 
 run().catch(error => {

@@ -1,5 +1,5 @@
-import {forEach, startsWith, has} from 'lodash';
-import {getServiceConsumers} from './ModuleUtils';
+import { forEach, startsWith, has } from 'lodash';
+import { getServiceConsumers } from './ModuleUtils';
 
 export class ModuleInitializer {
   constructor({
@@ -106,7 +106,7 @@ export class ModuleInitializer {
   }
 
   // valueType should be 'object' or 'generator'
-  _initModuleConsumedServices({module, servicesObject, valueType, map}) {
+  _initModuleConsumedServices({ module, servicesObject, valueType, map }) {
     if (servicesObject) {
       for (const serviceName in servicesObject) {
         if (has(servicesObject, serviceName)) {
@@ -120,7 +120,7 @@ export class ModuleInitializer {
           } else {
             value = servicesObject[serviceName];
           }
-          map[serviceName].push({module, generator, value});
+          map[serviceName].push({ module, generator, value });
         }
       }
     }
@@ -151,21 +151,21 @@ export class ModuleInitializer {
   }
 
   _getComponentRegistratorForModule(moduleName, module) {
-    return ({id, generator, store, provider, description}) => {
+    return ({ id, generator, store, provider, description }) => {
       this._checkValidPrefixForId(moduleName, module, id);
       return this.registerComponent(id, generator, store, provider);
     };
   }
 
   _getMethodRegistratorForModule(moduleName, module) {
-    return ({id, generator, description}) => {
+    return ({ id, generator, description }) => {
       this._checkValidPrefixForId(moduleName, module, id);
       this.registerMethod(id, generator);
     };
   }
 
   _getListenerRegistratorForModule(prefix) {
-    return ({id, callback}) => {
+    return ({ id, callback }) => {
       this.registerListener(id, prefix, callback);
     };
   }

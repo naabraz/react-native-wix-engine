@@ -1,7 +1,7 @@
 const childProcess = require('child_process');
 const _ = require('lodash');
-const {promisify} = require('util');
-const {Logger} = require('../utils/Logger');
+const { promisify } = require('util');
+const { Logger } = require('../utils/Logger');
 const fs = require('fs');
 const retry = require('../utils/retry');
 
@@ -28,30 +28,37 @@ class IosRunner {
     } else if (this._devicesNames) {
       udids = this._findDevicesByNames(devices);
       if (udids.length === 0) {
-        throw new Error(`Couldn't find devices matching the names '${this._devicesNames}'`);
+        throw new Error(
+          `Couldn't find devices matching the names '${this._devicesNames}'`,
+        );
       }
     } else {
       udids = this._getBootedDevicesIds(devices);
     }
 
     const bundleId = BundleIds[buildType];
-    await Promise.all(_.map(udids, async (udid) => {
-      await this._bootDeviceIfNeeded(devices, udid);
-      if (!disableUninstall) {
-        await this._uninstallApp(udid, bundleId);
-      }
+    await Promise.all(
+      _.map(udids, async udid => {
+        await this._bootDeviceIfNeeded(devices, udid);
+        if (!disableUninstall) {
+          await this._uninstallApp(udid, bundleId);
+        }
 
-      await retry({retries: 2, interval: 500}, async () => {
-        await this._installApp(udid, engineDir, buildType, target);
-      });
+        await retry({ retries: 2, interval: 500 }, async () => {
+          await this._installApp(udid, engineDir, buildType, target);
+        });
 
-      await this._packagerWatcher.waitUntilUp();
-      await this._launchApp(udid, bundleId);
-    }));
+        await this._packagerWatcher.waitUntilUp();
+        await this._launchApp(udid, bundleId);
+      }),
+    );
   }
 
   _findDevicesByNames(allDevices) {
-    const matchineDevices = _.filter(allDevices, (device) => this._devicesNames.indexOf(device.name) !== -1);
+    const matchineDevices = _.filter(
+      allDevices,
+      device => this._devicesNames.indexOf(device.name) !== -1,
+    );
     return _.map(matchineDevices, 'udid');
   }
 
@@ -60,17 +67,19 @@ class IosRunner {
   }
 
   _getBootedDevicesIds(allDevices) {
-    const bootedDevices = _.filter(allDevices, {state: 'Booted'});
+    const bootedDevices = _.filter(allDevices, { state: 'Booted' });
     return _.map(bootedDevices, 'udid');
   }
 
   _getDevices() {
-    const devicesJson = JSON.parse(childProcess.execSync(`xcrun simctl list -j devices`));
+    const devicesJson = JSON.parse(
+      childProcess.execSync('xcrun simctl list -j devices'),
+    );
     return _.flatten(_.values(devicesJson.devices));
   }
 
   async _bootDeviceIfNeeded(allDevices, udid) {
-    const device = _.filter(allDevices, {udid})[0];
+    const device = _.filter(allDevices, { udid })[0];
     if (device.state === 'Booted') {
       return;
     }
@@ -85,13 +94,21 @@ class IosRunner {
   }
 
   _buildApp(buildType, target) {
-    const {NativeBuilds} = require('../../../native_builds/index');
+    const { NativeBuilds } = require('../../../native_builds/index');
     NativeBuilds.buildIOS(target, buildType);
   }
   _buildAppIfNotExist(engineDir, buildType, target) {
-    const appPath = `${engineDir}/app_builds/${target.name}/${buildType}/ReactNativeWixEngine.${target.ext}`;
+    const appPath = `${engineDir}/app_builds/${
+      target.name
+    }/${buildType}/ReactNativeWixEngine.${target.ext}`;
     if (!fs.existsSync(appPath)) {
-      Logger.info(`Binary of ${Logger.colorQuote(buildType)} for ${Logger.colorQuote(target.name)}  is not available at ${Logger.colorQuote(appPath)}, Building it.....`);
+      Logger.info(
+        `Binary of ${Logger.colorQuote(buildType)} for ${Logger.colorQuote(
+          target.name,
+        )}  is not available at ${Logger.colorQuote(
+          appPath,
+        )}, Building it.....`,
+      );
       this._buildApp(buildType, target);
     }
     return appPath;
@@ -103,11 +120,13 @@ class IosRunner {
   }
 
   async _launchApp(deviceUdid, bundleId) {
-    Logger.info(`Launching app ${bundleId} on device ${deviceUdid}.` +
-                ` You can watch the device logs by running:\n` +
-                `xcrun simctl spawn ${deviceUdid} log stream --level debug --style compact --predicate 'process=="ReactNativeWixEngine" && subsystem=="com.facebook.react.log"'`);
+    Logger.info(
+      `Launching app ${bundleId} on device ${deviceUdid}.` +
+        ' You can watch the device logs by running:\n' +
+        `xcrun simctl spawn ${deviceUdid} log stream --level debug --style compact --predicate 'process=="ReactNativeWixEngine" && subsystem=="com.facebook.react.log"'`,
+    );
     await asyncExec(`xcrun simctl launch ${deviceUdid} ${bundleId}`);
   }
 }
 
-module.exports = {IosRunner};
+module.exports = { IosRunner };

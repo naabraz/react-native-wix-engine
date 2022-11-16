@@ -8,7 +8,7 @@ class Logger {
       quote: 'white',
       output: 'cyan',
       warning: 'magenta',
-      fatal: 'red'
+      fatal: 'red',
     });
   }
 
@@ -51,5 +51,5 @@ class Logger {
 }
 
 module.exports = {
-  Logger: new Logger()
+  Logger: new Logger(),
 };

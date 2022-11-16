@@ -1,7 +1,7 @@
 const childProcess = require('child_process');
 const _ = require('lodash');
-const {Logger} = require('../utils/Logger');
-const {Adb} = require('../utils/Adb');
+const { Logger } = require('../utils/Logger');
+const { Adb } = require('../utils/Adb');
 
 class AsyncPackagerRunner {
   run(engineDir, resetCache, port) {
@@ -21,7 +21,12 @@ class AsyncPackagerRunner {
     }
 
     const cwd = `${engineDir}/../..`;
-    Logger.info(`Running in background: ${Logger.color(`cd ${cwd} ${rnStartCmdArray.join(' ')}`, 'quote')}`);
+    Logger.info(
+      `Running in background: ${Logger.color(
+        `cd ${cwd} ${rnStartCmdArray.join(' ')}`,
+        'quote',
+      )}`,
+    );
 
     const packager = childProcess.spawn(
       rnStartCmdArray[0],
@@ -31,10 +36,10 @@ class AsyncPackagerRunner {
         stdio: 'inherit',
       },
     );
-    packager.on('exit', () => Logger.info(`The packager process finished`));
+    packager.on('exit', () => Logger.info('The packager process finished'));
 
     return packager;
   }
 }
 
-module.exports = {AsyncPackagerRunner};
+module.exports = { AsyncPackagerRunner };

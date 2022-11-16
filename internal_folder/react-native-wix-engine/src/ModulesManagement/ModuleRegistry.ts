@@ -1,17 +1,17 @@
 import _ from 'lodash';
 // @ts-ignore
-import {ComponentType} from 'react';
-import {Navigation} from 'react-native-navigation';
-import {getServiceConsumers, ConsumedServices} from './ModuleUtils';
+import { ComponentType } from 'react';
+import { Navigation } from 'react-native-navigation';
+import { getServiceConsumers, ConsumedServices } from './ModuleUtils';
 
 type GlobalID = string;
 type ComponentGenerator = () => ComponentType<any>;
 type MethodGenerator = () => Function;
 
 class ModuleRegistry {
-  private registeredComponents: {[key: string]: ComponentGenerator};
-  private registeredMethods: {[key: string]: MethodGenerator};
-  private eventListeners: {[key: string]: {[key: string]: Function}};
+  private registeredComponents: { [key: string]: ComponentGenerator };
+  private registeredMethods: { [key: string]: MethodGenerator };
+  private eventListeners: { [key: string]: { [key: string]: Function } };
   private consumedServices: ConsumedServices;
 
   constructor() {
@@ -24,14 +24,18 @@ class ModuleRegistry {
     this.hasMethod = this.hasMethod.bind(this);
     this.__notifyListeners = this.__notifyListeners.bind(this);
     this.__registerMethod = this.__registerMethod.bind(this);
-    this.__registerComponentAsScreen = this.__registerComponentAsScreen.bind(this);
+    this.__registerComponentAsScreen = this.__registerComponentAsScreen.bind(
+      this,
+    );
     this.__registerListener = this.__registerListener.bind(this);
     this.__removeListener = this.__removeListener.bind(this);
-    this.__registerConsumedServices = this.__registerConsumedServices.bind(this);
+    this.__registerConsumedServices = this.__registerConsumedServices.bind(
+      this,
+    );
     this.invoke = this.invoke.bind(this);
     this.getServiceConsumers = this.getServiceConsumers.bind(this);
 
-    Navigation.setLazyComponentRegistrator((name) => {
+    Navigation.setLazyComponentRegistrator(name => {
       if (this.registeredComponents[name]) {
         Navigation.registerComponent(name, this.registeredComponents[name]);
       }
@@ -41,7 +45,9 @@ class ModuleRegistry {
   component(globalID: GlobalID) {
     const generator = this.registeredComponents[globalID];
     if (!generator) {
-      console.error(`ModuleRegistry.component ${globalID} used but not yet registered`);
+      console.error(
+        `ModuleRegistry.component ${globalID} used but not yet registered`,
+      );
       return undefined;
     }
     return generator();
@@ -55,7 +61,7 @@ class ModuleRegistry {
     const callbackKey = _.uniqueId('eventListener');
     _.set(this.eventListeners, [globalID, callbackKey], callback);
     return {
-      remove: () => _.unset(this.eventListeners[globalID], callbackKey)
+      remove: () => _.unset(this.eventListeners[globalID], callbackKey),
     };
   }
 
@@ -70,7 +76,9 @@ class ModuleRegistry {
   invoke(globalID: GlobalID, ...args: any[]) {
     const generator = this.registeredMethods[globalID];
     if (!generator) {
-      console.error(`ModuleRegistry.invoke ${globalID} used but not yet registered`);
+      console.error(
+        `ModuleRegistry.invoke ${globalID} used but not yet registered`,
+      );
       return undefined;
     }
     const method = generator();
@@ -82,7 +90,7 @@ class ModuleRegistry {
     if (!listenerCallbacks) {
       return;
     }
-    _.forEach(listenerCallbacks, (callback) => invokeSafely(callback, args));
+    _.forEach(listenerCallbacks, callback => invokeSafely(callback, args));
   }
 
   __registerMethod = (globalID: GlobalID, generator: MethodGenerator) => {
@@ -93,7 +101,11 @@ class ModuleRegistry {
     this.registeredMethods[globalID] = generator;
   };
 
-  __registerListener(globalID: GlobalID, listenerModulePrefix: string, callback: Function) {
+  __registerListener(
+    globalID: GlobalID,
+    listenerModulePrefix: string,
+    callback: Function,
+  ) {
     _.set(this.eventListeners, [globalID, listenerModulePrefix], callback);
   }
 
@@ -105,7 +117,10 @@ class ModuleRegistry {
     this.consumedServices = consumedServices;
   }
 
-  __registerComponentAsScreen = (globalID: GlobalID, generator: ComponentGenerator) => {
+  __registerComponentAsScreen = (
+    globalID: GlobalID,
+    generator: ComponentGenerator,
+  ) => {
     if (this.registeredComponents[globalID]) {
       console.error(`Component Id: ${globalID} already registered`);
       return;

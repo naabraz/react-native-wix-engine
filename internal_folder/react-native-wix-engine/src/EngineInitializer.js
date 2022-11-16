@@ -23,7 +23,7 @@ class EngineInitializer {
       moduleGenerators,
     );
     this.injectGlobalEngine(this._dependencies);
-    const {moduleManager} = this._dependencies;
+    const { moduleManager } = this._dependencies;
     moduleManager.initModules();
     return this._dependencies.appLauncher.launch;
   }
@@ -31,7 +31,7 @@ class EngineInitializer {
   /**
    * engine global is a convinience way for modules to use engine APIs, instead of require the engine explicitly
    */
-  injectGlobalEngine({moduleRegistry}) {
+  injectGlobalEngine({ moduleRegistry }) {
     global.engine = {
       moduleRegistry,
     };

@@ -21,13 +21,13 @@ module.exports = {
   execSync,
   execSyncSilent,
   execRead,
-  kill
+  kill,
 };
 
 function exec(command, stdout) {
   const normalized = normalizeSpace(command);
   console.log(normalized);
-  return cp.execSync(normalized, {stdio: ['inherit', stdout, 'inherit']});
+  return cp.execSync(normalized, { stdio: ['inherit', stdout, 'inherit'] });
 }
 
 const WHITESPACE_REGEX = /\s+/g;

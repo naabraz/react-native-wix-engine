@@ -1,7 +1,10 @@
 #!/usr/bin/env node
-const {NativeBuilds} = require('../../tools/native_builds/index');
+const { NativeBuilds } = require('../../tools/native_builds/index');
 const BuildType = require('../../tools/native_builds/BuildType');
-const {simulator, iphone} = require('../../tools/native_builds/BuildPlatforms.json');
+const {
+  simulator,
+  iphone,
+} = require('../../tools/native_builds/BuildPlatforms.json');
 const exec = require('../utils/exec');
 
 run().catch(error => {

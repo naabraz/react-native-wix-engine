@@ -1,6 +1,6 @@
-const {IOSBuilder} = require('./modules/IOSBuilder');
-const {AndroidBuilder} = require('./modules/AndroidBuilder');
-const {Configurator} = require('./modules/Configurator');
+const { IOSBuilder } = require('./modules/IOSBuilder');
+const { AndroidBuilder } = require('./modules/AndroidBuilder');
+const { Configurator } = require('./modules/Configurator');
 class NativeBuilds {
   constructor() {
     this._configured = false;

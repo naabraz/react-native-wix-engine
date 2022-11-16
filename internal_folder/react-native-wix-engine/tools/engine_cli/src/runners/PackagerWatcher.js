@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
-const {sleep} = require('../utils/Sleep');
-const {Logger} = require('../utils/Logger');
+const { sleep } = require('../utils/Sleep');
+const { Logger } = require('../utils/Logger');
 
 class PackagerWatcher {
   constructor(port, disabled) {
@@ -11,7 +11,7 @@ class PackagerWatcher {
   }
 
   async validateDown() {
-    return this._disabled || !await this._ping();
+    return this._disabled || !(await this._ping());
   }
 
   async startWatchingUntilUp() {
@@ -20,7 +20,7 @@ class PackagerWatcher {
     }
 
     this._started = false;
-    while (!await this._ping()) {
+    while (!(await this._ping())) {
       await sleep(100);
     }
 
@@ -37,7 +37,9 @@ class PackagerWatcher {
     }
 
     if (this._started === undefined) {
-      throw new Error('startWatchingUntilUp() should be called prior to waitUntilUp()');
+      throw new Error(
+        'startWatchingUntilUp() should be called prior to waitUntilUp()',
+      );
     }
 
     if (this._started) {
@@ -45,7 +47,7 @@ class PackagerWatcher {
     }
 
     Logger.info('Waiting for the packager to respond..');
-    return new Promise((resolve) => this._waitingCallbacks.push(resolve));
+    return new Promise(resolve => this._waitingCallbacks.push(resolve));
   }
 
   async _ping() {
@@ -62,5 +64,5 @@ class PackagerWatcher {
 }
 
 module.exports = {
-  PackagerWatcher
+  PackagerWatcher,
 };

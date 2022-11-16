@@ -1,6 +1,6 @@
 const childProcess = require('child_process');
-const {Logger} = require('../utils/Logger');
-const {promisify} = require('util');
+const { Logger } = require('../utils/Logger');
+const { promisify } = require('util');
 const _ = require('lodash');
 const fs = require('fs');
 
@@ -70,7 +70,7 @@ class AndroidRunner {
   }
 
   _buildApp(buildType) {
-    const {NativeBuilds} = require('../../../native_builds/index');
+    const { NativeBuilds } = require('../../../native_builds/index');
     NativeBuilds.buildAndroid(buildType);
   }
   _buildAppIfNotExist(engineDir, buildType) {
@@ -111,4 +111,4 @@ class AndroidRunner {
   }
 }
 
-module.exports = {AndroidRunner};
+module.exports = { AndroidRunner };

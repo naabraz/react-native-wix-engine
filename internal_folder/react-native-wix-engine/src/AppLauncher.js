@@ -1,7 +1,7 @@
 import autobind from 'react-autobind';
 
 export class AppLauncher {
-  constructor({navigator, moduleManager}) {
+  constructor({ navigator, moduleManager }) {
     this.navigator = navigator;
     this.moduleManager = moduleManager;
     autobind(this);

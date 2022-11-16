@@ -9,21 +9,21 @@ type Consumer = {
   value?: any;
 };
 
-type ConsumerInfo = Consumer & {module: Module};
+type ConsumerInfo = Consumer & { module: Module };
 
-export type ConsumedServices = {[key: string]: ConsumerInfo[]};
+export type ConsumedServices = { [key: string]: ConsumerInfo[] };
 
 export function getServiceConsumers(
   consumedServices: ConsumedServices,
   serviceName: string,
 ) {
-  const consumers: {[key: string]: any} = {};
+  const consumers: { [key: string]: any } = {};
   const consumersInfo = consumedServices[serviceName];
 
   if (consumersInfo) {
     for (let i = 0; i < consumersInfo.length; i++) {
       const info = consumersInfo[i];
-      const {module, generator} = info;
+      const { module, generator } = info;
       if (info.value) {
         consumers[module.prefix()] = info.value;
       } else {
