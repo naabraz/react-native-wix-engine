@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, Alert, Button } from 'react-native';
+import { Alert } from 'react-native';
 
-import { ThemeProvider, Box } from '@gympass/yoga';
+import { ThemeProvider, Box, Text, Button } from '@gympass/yoga';
 
 class Screen extends React.Component {
   render() {
@@ -9,12 +9,13 @@ class Screen extends React.Component {
       <ThemeProvider>
         <Box flex={1} alignItems="center" justifyContent="center" bg="success">
           <Text>Demo Module B</Text>
-          <Button
-            title="Say Hello to module A"
+          <Button.Link
+            marginTop="small"
             onPress={() =>
               engine.moduleRegistry.invoke('demo-module-a.some-method')
-            }
-          />
+            }>
+            Say Hello to module A
+          </Button.Link>
         </Box>
       </ThemeProvider>
     );
